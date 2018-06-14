@@ -82,7 +82,7 @@ describe("基本数据类型单元测试", () => {
     assert.equal("中文abc".length, 5);
   });
 
-  it("String CharCode, CodePoint 方法测试", () => {
+  it("String charCode codePoint", () => {
     assert.equal("A".charCodeAt(0), 65);
     assert.equal("a".charCodeAt(0), 97);
     const codes: number[] = [];
@@ -112,42 +112,103 @@ describe("基本数据类型单元测试", () => {
     console.log("2**16", Math.pow(2, 16)); // Unicode 16  65536
   });
 
-  it("String 方法测试", () => {
+  it("String indexOf/lastIndexOf", () => {
     assert.strictEqual("a".indexOf("a"), 0);
     assert.strictEqual("a".indexOf("b"), -1);
+    assert.strictEqual("aba".lastIndexOf("a"), 2);
+  });
+
+  it("String startsWith/endWith", () => {
+    assert.isTrue("abc".startsWith("a"));
+    assert.isTrue("abc".startsWith("abc"));
+    assert.isFalse("abc".startsWith("aB"));
+
     assert.isTrue("abc".endsWith("c"));
     assert.isTrue("abc".endsWith("abc"));
     assert.isFalse("abC".endsWith("bc"));
-    assert.strictEqual("aba".lastIndexOf("a"), 2);
+  });
+
+  it("String match", () => {
     assert.deepEqual(["abc"], "abc".match(/abc/));
     assert.deepEqual(["abc"], "abc".match(/ab./));
     assert.deepEqual(["abc"], "abc".match(/\w+/));
     assert.deepEqual(["123"], "ab123de".match(/\d+/));
     assert.deepEqual(["abc9"], "$abc9中文".match(/\w+/)); // [A-Za-z0-9-_]
     assert.notEqual(["123", "45"], "ab123de45".match(/\d+/));
+  });
 
-    const obj1 = { name: "banxi" };
-    const obj2 = { name: "banxi" };
-    assert.notEqual(obj1, obj2);
-    assert.deepEqual(obj1, obj2);
-    // padLeft
+  it("String padStart/padEnd", () => {
     assert.equal("ab".padStart(5, "*"), "***ab");
     assert.equal("ab".padEnd(5, "*"), "ab***");
-    // equals
-    // ******
+  });
+
+  it("String repeat", () => {
     assert.equal("*".repeat(5), "*****");
     assert.equal("**".repeat(5), "**********");
+  });
 
+  it("String replace", () => {
     assert.equal("abc1238".replace("abc", ""), "1238");
     assert.equal("abc1238".replace(/\d+/, ""), "abc");
+  });
 
+  it("String search", () => {
     assert.equal("abc123".search(/\d+/), 3);
     assert.equal("abc".search(/\d+/), -1);
+  });
 
+  it("String slice", () => {
     const nickname = "banxi1988";
     assert.equal("banxi1988", nickname.slice(0));
     assert.equal("1988", nickname.slice(5));
     assert.equal("banxi1988", nickname);
     assert.equal("abc123cd".slice(3, -2), "123");
+  });
+
+  it("String split", () => {
+    assert.deepEqual("a/b/c".split("/"), ["a", "b", "c"]);
+    assert.deepEqual(
+      "a/b/c/d/e".split("/", 2),
+      ["a", "b"],
+      "注意 Limit指的是返回的数组的长度"
+    );
+    assert.deepEqual("a/b/c".split("/", 0), []);
+    assert.deepEqual(
+      "".split("/"),
+      [""],
+      "空字符串分割之后返回的是带有一个空字符串的数组"
+    );
+    assert.notDeepEqual("has 3 apple 20 orange".split(/\d+/), [
+      "has",
+      "apple",
+      "orange"
+    ]);
+    assert.notDeepEqual("has 3 apple 20 orange".split(/(\d+)/), [
+      "has",
+      "3",
+      "apple",
+      "20",
+      "orange"
+    ]);
+    assert.deepEqual("abc".split(""), ["a", "b", "c"]);
+    assert.deepEqual("ab中文".split(""), ["a", "b", "中", "文"]);
+    assert.notDeepEqual("résumé".split(""), ["r", "é", "s", "u", "m", "é"]);
+    assert.notDeepEqual("résumé".split(/(?:)/u), [
+      "r",
+      "é",
+      "s",
+      "u",
+      "m",
+      "é"
+    ]);
+  });
+
+  it("Object  比较测试", () => {
+    const obj1 = { name: "banxi" };
+    const obj2 = { name: "banxi" };
+    assert.notEqual(obj1, obj2);
+    assert.deepEqual(obj1, obj2);
+    // equals
+    // ******
   });
 });
